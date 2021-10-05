@@ -6,15 +6,15 @@ const MenuSchema = new mongoose.Schema({
 			name: {type: String, required: true},
 			items: [
 				{
-					type: mongoose.Types.ObjectID,
+					type: mongoose.Types.ObjectId,
 					ref: "Foods"
 				}
 			]
 		}
 	],
-	recomended: [
+	recommended: [
 		{
-			type: mongoose.Types.ObjectID,
+			type: mongoose.Types.ObjectId,
 			ref: "Foods",
 			unique: true
 		}
@@ -24,4 +24,4 @@ const MenuSchema = new mongoose.Schema({
 	timestamps: true
 });
 
-exports const MenuModel = mongoose.model("Menus", MenuSchema)
+export const MenuModel = mongoose.model("Menus", MenuSchema);
