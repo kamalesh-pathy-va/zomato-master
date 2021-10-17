@@ -1,6 +1,8 @@
 import express from "express";
 import RestaurantModel from "../../database/restaurant";
 
+import { ValidateRestaurantCity, ValidateRestaurantId, ValidateRestaurantSearchString } from "../../validation/restaurant";
+
 const Router = express.Router();
 
 /*
@@ -12,7 +14,8 @@ Method		Get
 */
 
 Router.get("/", async (req, res) => {
-	try{
+	try {
+		await ValidateRestaurantCity(req.query);
 		const {city} = req.query;
 		const restaurants = await RestaurantModel.find({city});
 		return res.json({restaurants});
@@ -31,6 +34,7 @@ Method		Get
 
 Router.get("/:_id", async(req, res) =>{
 	try {
+		await ValidateRestaurantId(req.params);
 		const {_id} = req.params;
 		const restaurant = await RestaurantModel.findOne(_id);
 
@@ -54,6 +58,7 @@ Method		Get
 
 Router.get("/search", async(req, res) => {
 	try {
+		await ValidateRestaurantSearchString(req.body);
 		const {searchString} = req.body;
 		const restaurants = await RestaurantModel.find({
 			name: {$regex: searchString, $options: "i"}

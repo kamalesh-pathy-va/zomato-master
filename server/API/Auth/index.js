@@ -6,7 +6,10 @@ import passport from "passport";
 const Router = express.Router();
 
 //Models
-import {UserModel} from "../../database/user";
+import { UserModel } from "../../database/user";
+
+//Validations
+import { ValidateSignup, ValidateSignin } from "../../validation/auth";
 
 /*
 Router		/signup
@@ -16,7 +19,9 @@ Access 		Public
 Method		POST
 */
 Router.post("/signup", async(req, res) => {
-	try{
+	try {
+		await ValidateSignup(req.body.credentials);
+
 		await UserModel.findEmailAndPhone(req.body.credentials);
 		const newUser = await UserModel.create(req.body.credentials);
 
@@ -38,7 +43,8 @@ Access 		Public
 Method		POST
 */
 Router.post("/signin", async(req, res) => {
-	try{
+	try {
+		await ValidateSignin(req.body.credentials);
 		const user = await UserModel.findByEmailAndPassword(req.body.credentials);
 
 		//JWT Auth Token
@@ -59,9 +65,13 @@ Access 		Public
 Method		POST
 */
 
-Router.get("/google", passport.authenticate("google", {
-	scope: ["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"]
-}));
+Router.get("/google", passport.authenticate("google",{
+scope: [
+  "https://www.googleapis.com/auth/userinfo.profile",
+  "https://www.googleapis.com/auth/userinfo.email"
+],
+})
+);
 
 /*
 Router		/google/callback
@@ -71,8 +81,10 @@ Access 		Public
 Method		POST
 */
 
-Router.get("/google/callback", passport.authenticate("google", {failureRedirect: "/"}), (req, res) => {
-	return res.json({token: req.session.passport.user.token});
-});
+Router.get("/google/callback", passport.authenticate("google",{failureRedirect: "/"}),
+(req,res) => {
+  return res.json({token: req.session.passport.user.token});
+}
+);
 
 export default Router;
