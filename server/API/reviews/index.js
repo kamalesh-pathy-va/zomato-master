@@ -2,6 +2,8 @@ import express from "express";
 
 import { ReviewModel } from "../../database/reviews";
 
+import { ValidateReviewData, ValidateReviewId } from "../../validation/reviews";
+
 const Router = express.Router()
 
 /*
@@ -15,7 +17,8 @@ Method		Get
 
 Router.post("/new", async (req, res) => {
     try {
-        const { reviewData } = req.body;
+        await ValidateReviewData(req.body.data);
+        const reviewData = req.body.data;
         await ReviewModel.create(reviewData);
         return res.json({ review: "Successfuly created review" });
     } catch (error) {
@@ -33,6 +36,7 @@ Method		Delete
 
 Router.delete("/delete/:_id", async (req, res) => {
     try {
+        await ValidateReviewId(req.params);
         const { _id } = req.params;
         await ReviewModel.findByIdAndDelete(_id);
         return res.json({ review: "Successfuly Deleted review" });

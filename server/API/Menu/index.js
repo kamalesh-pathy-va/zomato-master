@@ -1,7 +1,9 @@
 import express from "express";
 
 import {MenuModel} from "../../database/menu";
-import {ImageModel} from "../../database/image";
+import { ImageModel } from "../../database/image";
+
+import { ValidateMenuListId, ValidateImageId } from "../../validation/menu";
 
 const Router = express.Router();
 
@@ -15,6 +17,7 @@ Method		Get
 
 Router.get("/list/:_id", async(req, res) => {
 	try {
+		await ValidateMenuListId(req.params);
 		const {_id} = req.params;
 		const menus = await MenuModel.findOne(_id);
 		return res.json({menus});
@@ -33,6 +36,7 @@ Method		Get
 
 Router.get("/image/:_id", async (req, res) =>{
 	try {
+		await ValidateImageId(req.params);
 		const {_id} = req.params;
 		const menus = await ImageModel.findOne(_id);
 
