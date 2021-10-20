@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaPizzaSlice } from "react-icons/fa";
 import { ImLocation } from "react-icons/im";
 import { AiFillCaretDown } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
+import { SigninModal, SignupModal } from "../Modal";
 
 const MobileNav = () => {
     return (
@@ -23,6 +24,26 @@ const MobileNav = () => {
 };
 
 const DesktopNav = () => {
+    const [showup, setShowupState] = useState(false);
+
+    const showupModal = () => {
+        setShowupState(true);
+    };
+
+    const hideupModal = () => {
+        setShowupState(false);
+    };
+
+    const [showin, setShowinState] = useState(false);
+
+    const showinModal = () => {
+        setShowinState(true);
+    };
+
+    const hideinModal = () => {
+        setShowinState(false);
+    };
+
     return (
         <>
             <div className="hidden lg:flex items-center">
@@ -49,8 +70,11 @@ const DesktopNav = () => {
                 </div>
             </div>
             <div className="flex text-gray-500 text-lg ml-16">
-                <button className="mx-4 w-24 p-3">Log In</button>
-                <button className="mx-4 w-24 p-3">Sign Up</button>
+                <button className="mx-4 w-24 p-3" onClick={showinModal}>Log In</button>
+                <SigninModal onClose={hideinModal} show={showin} />
+                    
+                <button className="mx-4 w-24 p-3" onClick={showupModal}>Sign Up</button>
+                <SignupModal onClose={hideupModal} show={showup} />
             </div>
             </div>
         </>

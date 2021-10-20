@@ -1,12 +1,12 @@
+import { Redirect } from "react-router";
 import HomeLayoutHOC from "./HOC/Home.HOC";
 
-import Temp from "./Components/temp";
 import Master from "./Components/master";
 
 function App() {
   return (
     <>
-      <HomeLayoutHOC path="/" exact component={Temp} />
+      <Redirect from="/" to="/delivery" />
       <HomeLayoutHOC path="/:type" exact component={Master} />
     </>
   );

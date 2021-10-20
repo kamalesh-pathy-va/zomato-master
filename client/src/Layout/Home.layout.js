@@ -16,9 +16,10 @@ const HomeLayout = (props) => {
     return (<>
         <div className="container mx-auto xl:px-20">
             <Navbar />
+            <FoodTab />
             {props.children}
+            
         </div>
-        <FoodTab />
     </>);
 };
 
